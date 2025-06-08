@@ -5,11 +5,11 @@ const OrderSchema = new mongoose.Schema({
   cartId: String,
   cartItems: [
     {
-        productId: String,
-        title: String,
-        image: String,
-        price: String,
-        quantity: Number,
+      productId: String,
+      title: String,
+      image: String,
+      price: String,
+      quantity: Number,
     },
   ],
   addressInfo: {
@@ -18,16 +18,29 @@ const OrderSchema = new mongoose.Schema({
     city: String,
     pincode: String,
     phone: String,
-    notes: String,
+    notes: String
   },
-  orderStatus: String,
+  orderStatus: {
+    type: String,
+    enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+    default: "pending"
+  },
   paymentMethod: String,
-  paymentStatus: String,
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "paid", "failed", "refunded"],
+    default: "pending"
+  },
   totalAmount: Number,
-  orderDate: Date,
+  orderDate: {
+    type: Date,
+    default: Date.now
+  },
   orderUpdateDate: Date,
   paymentId: String,
-  payerId: String,      
-});
+  razorpayOrderId: String,
+  signature: String,
+  paymentDate: Date
+}, { timestamps: true });
 
 module.exports = mongoose.model("Order", OrderSchema);
